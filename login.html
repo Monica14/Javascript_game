@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+ 	<title>xxxLutz- Login</title>
+  	<meta charset="utf-8">
+  	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+  	<!-- Main style -->
+  	<link rel="stylesheet" type="text/css" href="css/style.css">
+
+	<!-- Font awesome -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
+	<script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.3.1.min.js"></script>
+</head>
+<body>
+	<div class="login-page">
+		<div class="container">
+			<div class="login-wrapper">
+				<h1>Gratulation!</h1>
+				<div class="p-wrapper">
+						<p>Du hast <span id="scoreprint">0</span> Punkte erreicht!</p>
+					<p>Melde dich heir an um am Gewinnspiel teilzunehmen.</p>
+				</div>
+				<h2>Anmeldung zum Gewinnspiel</h2>
+
+				<form class="login-form">
+					<div class="input-wrapper">
+						<input type="text" placeholder="Vorname*" required>
+						<input type="text" placeholder="Nachname*" required>
+					</div>
+					<div class="input-wrapper">
+						<input type="email" placeholder="E-Mail">
+						<input type="text" placeholder="PLZ">
+					</div>
+					<label class="label-wrapper">
+					  <input type="radio" checked="checked" name="radio">
+					  <span class="checkmark"></span>
+					  Ich akzeptiere die <a href="#">Teilnahmebedingungen</a> und die <a href="#">Datenschutzerklarung</a>
+					</label>
+					<label class="label-wrapper">
+					  <input type="radio" checked="checked" name="radio">
+					  <span class="checkmark"></span>
+					  Ich mochte den Newsletter abonnieren*
+					</label>
+					<p>*Unser Newsletter informiert Sie regelmabig uber unsere Produkte und Aktionen. Informationen zu den Inhalten,der Protokollierung Ihrer Anmeldung,dem Versand uber den Anbieter Emarsys,der statistischen Auswertung sowie Ihren Abbestellmoglichkeiten,erhalten Sie in unserer Datenschultzerklarung.</p>
+					<button class="common-btn">Abschicken</button>
+				</form>
+			</div>
+		</div>
+	</div>
+
+
+	<!-- Script -->
+	<script src="js/custom.js"></script>
+	<script>
+			$("#scoreprint").text(localStorage.getItem('scorevalue'));
+		</script>
+</body>
+</html>

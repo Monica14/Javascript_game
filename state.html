@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/phaser-ce/2.11.1/phaser.min.js"></script>
+</head>
+
+<body>
+
+    <script>
+        var game = new Phaser.Game(640, 480, Phaser.AUTO, 'game-area');
+
+        var back;
+        var mushroom;
+        var anim;
+        var loopText; var cursors; var jumpTimer = 0;
+        var facing = 'left'; var score = 0;
+        var scoreText; var text; var cnt = 0; var counter = 0;
+        function Boot() { }; function Preload() { }; function MainMenuState() { };
+        function LevelMasterState() { }; function LevelIntroState() { }; function LevelRoundState() { }; function MainIntroState() { };
+
+        Boot.prototype = {
+            preload: function () {
+                // load preloader assets
+                game.load.image('background', 'background.png'); ////////// add sprite
+                game.load.image('star', './examples/assets/games/starstruck/star2.png'); ////////// add sprite
+                game.load.spritesheet('dude', './examples/assets/games/starstruck/dude.png', 32, 48);
+                game.load.spritesheet('button', './examples/assets/buttons/button_sprite_sheet.png', 193, 71);
+            },
+            create: function () {
+                // setup game environment
+                // scale, input etc..
+                /////////////// bounce on the surface /////////////////////// 
+
+                bg = game.add.tileSprite(0, 0, 800, 600, 'background');
+
+                game.physics.arcade.gravity.y = 250;
+                // button = game.add.button(game.world.centerX - 95, 100, 'button', actionOnClick, this, 2, 1, 0);
+
+                player = game.add.sprite(32, 32, 'dude');
+                game.physics.enable(player, Phaser.Physics.ARCADE);
+
+                player.body.bounce.y = 0.2;
+                player.body.collideWorldBounds = true;
+
+                player.anchor.setTo(0.5, 0.5);
+                player.alpha = 0;
+                // player.body.setSize(20, 32, 5, 16);
+
+                /////////////// turn on the surface /////////////////////// 
+
+                //this.player = this.game.add.sprite(300, 300, 'player');
+                // let walk = player.animations.add('walk');
+                // player.animations.play('walk', 10, true);
+
+                //  And this starts the animation playing by using its key ("walk")
+                //  30 is the frame rate (30fps)
+                //  true means it will loop when it finishes
+                //player.animations.play('left', 30, true);
+
+                player.animations.add('left', [0, 1, 2, 3], 10, true);
+                player.animations.add('turn', true);
+                player.animations.add('right', [5, 6, 7, 8], 10, true);
+
+                cursors = game.input.keyboard.createCursorKeys();
+                jumpButton = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
+
+                //////////// star collect ///////////////////
+                stars = game.add.group();
+                stars.enableBody = true;
+
+                text = game.add.text(100, 100, "Score : ", {
+                    font: "30px Arial",
+                    fill: "#ff0044",
+                    align: "top-center"
+                });
+
+                cnt = game.add.text(game.world.centerX, game.world.centerY, 'Counter: 0', { font: "64px Arial", fill: "#ffffff", align: "center" });
+
+                text.anchor.setTo(0.5, 0.5);
+                // game.state.stop();
+                //  Here we'll create 12 of them evenly spaced apart
+                for (var i = 0; i < 12; i++) {
+                    //  Create a star inside of the 'stars' group
+                    var star = stars.create(i * 70, 1, 'star');
+
+                    //  Let gravity do its thing
+                    star.body.gravity.y = 6;
+                    star.body.collideWorldBounds = true;
+
+                    //  This just gives each star a slightly random bounce value
+                    star.body.bounce.y = 0.7 + Math.random() * 0.2;
+                }
+                //game.time.events.onInputDown(this.click, this);
+                // game.time.events.loop(Phaser.Timer.SECOND, updateCounter, this);
+                // game.state.start('preload');
+                game.add.tween(player).to({ alpha: 1 }, 2000, Phaser.Easing.Linear.None, true, 0, 1000, true);
+            },
+
+            update: function () {
+
+                player.body.velocity.x = 0;
+
+                if (cursors.left.isDown) {
+                    player.body.velocity.x = -150;
+                    player.animations.play('left'); //////////// along with path change face direction      
+                    game.physics.arcade.overlap(player, stars, collectStar, null, this);
+                }
+                else if (cursors.right.isDown) {
+                    player.body.velocity.x = 150;
+                    player.animations.play('right');
+                    game.physics.arcade.overlap(player, stars, collectStar, null, this);
+                }
+                else {
+                    player.body.velocity.x = 0;
+                    player.animations.stop();
+                }
+
+
+
+                if (jumpButton.isDown && player.body.onFloor() && game.time.now > jumpTimer) {
+                    player.body.velocity.y = -250;
+                    jumpTimer = game.time.now + 750;
+                }
+
+
+            }
+
+        };
+
+        function collectStar(player, star) {
+            star.kill();
+            score += 10;
+            // var text = game.add.text(32, 32, 'Score: ' + score);
+            // text.inputEnabled = true;
+            // text.input.enableDrag();
+            text.setText("Score : " + score);
+
+        }
+
+        function click() {
+            player.animations.destroy();
+        }
+
+
+        Preload.prototype = {
+            preload: function () {
+                //alert("fhggfh")
+                // load all game assets
+                // images, spritesheets, atlases, audio etc..
+                game.load.image('background', 'background.png'); ////////// add sprite
+                //game.load.image('background', 'background.png'); ////////// add sprite
+                //game.load.image('star', './examples/assets/games/starstruck/star2.png'); ////////// add sprite
+                game.load.spritesheet('dude', './examples/assets/pics/acryl_bladerunner.png');
+                //player = game.add.sprite(32, 32, 'dude');
+                //game.load.spritesheet('button', './examples/assets/buttons/button_sprite_sheet.png', 193, 71);
+            },
+            create: function () {
+                game.add.tileSprite(0, 0, 800, 600, 'background');
+                game.add.sprite(32, 32, 'dude');
+               game.state.start('main-intro');
+            }
+        };
+
+
+        MainIntroState.prototype = {
+            create: function () {
+                // add main intro assets into the world
+                this.tweenFadeState();
+            },
+
+            tweenFadeState: function () {
+                game.add.tween({})
+                    .to({ alpha: 1 }, 2000)
+                    .onComplete.add(function () {
+                        game.state.start('main-menu');
+                    }, this);
+            }
+        };
+
+        MainMenuState.prototype = {
+            create: function () {
+                this.enterKey = this.game.input.keyboard
+                    .addKey(Phaser.Keyboard.ENTER);
+
+                this.enterKey.onDown.add(this.tweenPlayState, this);
+            },
+            tweenPlayState: function () {
+                var tweenMenuShrink = game.add.tween({})
+                    .to({ x: 0, y: 0 }, 200);
+
+                var tweenFadeIn = game.add.tween({})
+                    .to({ alpha: 1 }, 2000);
+
+                tweenFadeIn.onComplete.add(function () {
+                    game.state.start('level-master');
+                }, this);
+
+                tweenMenuShrink.chain(tweenFadeIn);
+                tweenMenuShrink.start();
+            }
+        };
+
+
+        LevelMasterState.prototype = {
+            init: function (levelData) {
+                if (!levelData) {
+                    levelData = {
+                        level: 0,
+                        round: 1,
+                        players: [
+                            { score: 0, skill: 1 },
+                            { score: 0, skill: 1 }
+                        ]
+                    };
+                }
+
+                this.levelData = levelData;
+                this.winScore = 2;
+            },
+
+            create: function () {
+                this.decideLevelState();
+            }
+        };
+
+        LevelMasterState.prototype = {
+            decideLevelState: function () {
+                if (this.isFirstLevel() || this.getWinningPlayer() !== -1) {
+                    this.nextLevel();
+                } else {
+                    this.nextRound();
+                }
+            },
+            nextLevel: function () {
+                this.levelData.level++;
+
+                this.levelData.players.forEach(function (p) {
+                    p.score = 0;
+                }, this);
+
+                this.levelData.round = 1;
+
+                game.state.start('level-intro', true, false, this.levelData);
+            },
+            nextRound: function () {
+                this.levelData.round++;
+                game.state.start('level-round', true, false, this.levelData);
+            }
+        };
+
+        LevelIntroState.prototype = {
+            init: function (levelData) {
+                this.levelData = levelData;
+            },
+            create: function () {
+                var tweenIntro = this.tweenIntro();
+
+                if (this.levelData.level === 1) {
+                    var tweenSkillMenuPop = this.tweenSkillMenuPop();
+
+                    tweenIntro.chain(tweenSkillMenuPop);
+                    tweenSkillMenuPop.onComplete.add(this.levelStart, this);
+                } else {
+                    tweenIntro.onComplete.add(this.levelStart, this);
+                }
+            },
+            levelStart: function () {
+                game.state.start('level-round', true, false, this.levelData);
+            },
+            tweenIntro: function () {
+                var tween = this.game.add.tween({})
+                    .to({ alpha: 0 }, 1000, Phaser.Easing.Linear.None, true);
+
+                return tween;
+            },
+            tweenSkillMenuPop: function () {
+                var tween = this.game.add.tween({})
+                    .to({ x: 1, y: 1 }, 500, Phaser.Easing.Linear.None, true);
+
+                return tween;
+            }
+        };
+
+        LevelRoundState.prototype = {
+            init: function (levelData) {
+                this.levelData = levelData;
+            },
+            create: function () {
+                this.enterKey = this.game.input.keyboard
+                    .addKey(Phaser.Keyboard.ENTER);
+
+                this.enterKey.onDown.add(this.roundEnd, this);
+            },
+            roundEnd: function () {
+                this.nextRound();
+            },
+            nextRound: function () {
+                game.state.start('level-master', true, false, this.levelData);
+            }
+        };
+
+
+        game.state.add('boot', Boot);
+        game.state.add('preload', Preload);
+        game.state.add('main-intro', MainIntroState);
+        game.state.add('main-menu', MainMenuState);
+        game.state.add('level-master', LevelMasterState);
+        game.state.add('level-intro', MainIntroState);
+        game.state.add('level-round', LevelRoundState);
+        game.state.start('boot');
+    </script>
+    <div id="game-area"></div>
+</body>
+
+</html>

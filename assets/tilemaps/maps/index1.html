@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>xxxLutz</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- Main style -->
+  <link rel="stylesheet" type="text/css" href="css/style.css">
+
+  <!-- Font awesome -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU"
+    crossorigin="anonymous">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/phaser-ce/2.11.1/phaser.min.js"></script>
+  <script src="./states/menu.js"></script>
+  <script src="./states/contact.js"></script>
+  <script src="./states/lavel2.js"></script>
+  <script src="./states/lavel3.js"></script>
+  <script src="./states/lavel4.js"></script>
+  <script src="./states/lavel5.js"></script>
+  <script src="./states/main1.js"></script>
+  <script>
+    $(function () {
+      $('#startgame').on('click', function () {
+        //alert('sdfds')
+        $('#sleepwalkerhide').hide('slow')
+        $('.main-banner1').show('slow');
+        $("#startModal").attr('style', 'display:none');
+      });
+    })
+
+  </script>
+</head>
+
+<body>
+  <div class="home-page">
+    <!-- Header starts here -->
+    <header>
+      <div class="container">
+        <div class="logo">
+          <a href="index.html">
+            <img src="img/logo.png">
+          </a>
+        </div>
+        <div class="main-menu">
+          <!-- The overlay -->
+          <div id="myNav" class="overlay">
+
+            <!-- Button to close the overlay navigation -->
+            <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+
+            <!-- Overlay content -->
+            <div class="overlay-content">
+              <a href="#">Anleitung</a>
+              <a href="index.html">Spiel starten</a>
+              <a href="conditions.html">Teilnahmebedingungen</a>
+              <a href="privacy-policy.html">Datenschutzerklärung</a>
+            </div>
+
+          </div>
+
+          <!-- Use any element to open/show the overlay navigation menu -->
+          <span onclick="openNav()" class="menu-bar"><i class="fas fa-bars"></i></span>
+        </div>
+        <div class="clrflt"></div>
+      </div>
+    </header>
+    <!-- Header ends here -->
+
+    <!-- Banner starts here -->
+    <section class="main-banner" id="sleepwalkerhide">
+      <div class="cloud-wrapper">
+        <div class="container">
+          <div class="text-wrapper" id="text-wrapper">
+            <h1>Im Schlaf Zu Den <span>Prozenten</span></h1>
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
+              dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
+              ex ea commodo consequat</p>
+            <button class="common-btn" id="myBtn">Spiel Starten</button>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="main-banner1" id="sleepwalkershow" style="display:none">
+      <div class="cloud-wrapper">
+      </div>
+    </section>
+
+    </section>
+    <!-- Banner ends here -->
+
+    <!-- Footer starts here -->
+    <footer>
+      <div class="container">
+        <ul class="social-media">
+          <li><a href="https://www.facebook.com/xxxlutz.at/" target="_blank"><i class="fab fa-facebook-f"></i></a></li>
+          <li><a href="https://www.youtube.com/user/XXXLutzTV" target="_blank"><i class="fab fa-youtube"></i></a></li>
+          <li><a href="https://www.pinterest.at/xxxlutzAT/" target="_blank"><i class="fab fa-pinterest-p"></i></a></li>
+          <li><a href="https://www.instagram.com/lutz.at/?hl=de" target="_blank"><i class="fab fa-instagram"></i></a></li>
+          <li><a href="https://www.xxxlutz.at/"><i class="fas fa-home" target="_blank"></i></a></li>
+          <li><a href="https://www.xxxlutz.at/c/impressum" target="_blank">Impressum</a></li>
+        </ul>
+      </div>
+    </footer>
+    <!-- Footer ends here -->
+  </div>
+
+  <!-- Modal -->
+  <!-- The Modal -->
+  <div id="startModal" class="modal">
+
+    <!-- Modal content -->
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <h1>Anleitung</h1>
+      <p>Hier wird das Spiel erklart</p>
+      <img src="img/modal-img.jpg">
+      <button class="common-btn" id="startgame">Spiel Starten</button>
+    </div>
+
+  </div>
+
+  <!-- Script -->
+  <script src="js/custom.js"></script>
+</body>
+
+</html>

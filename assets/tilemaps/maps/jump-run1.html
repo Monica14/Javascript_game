@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/phaser-ce/2.11.1/phaser.min.js"></script>
+</head>
+
+<body>
+
+    <script>
+        var game = new Phaser.Game(800, 600, Phaser.AUTO, 'phaser-example', { preload: preload, create: create, update: update });
+
+        function preload() {
+
+            game.load.image('background', 'background.png'); ////////// add sprite
+            game.load.image('star', './examples/assets/games/starstruck/star2.png'); ////////// add sprite
+            game.load.spritesheet('dude', './examples/assets/games/starstruck/dude.png', 32, 48);
+            game.load.spritesheet('button', './examples/assets/buttons/button_sprite_sheet.png', 193, 71);
+        }
+        var back;
+        var mushroom;
+        var anim;
+        var loopText; var cursors; var jumpTimer = 0;
+        var facing = 'left'; var score = 0;
+        var scoreText; var text; var cnt = 0;var counter = 0;
+
+        function create() {
+
+            /////////////// bounce on the surface /////////////////////// 
+
+            bg = game.add.tileSprite(0, 0, 800, 600, 'background');
+
+            game.physics.arcade.gravity.y = 250;
+            // button = game.add.button(game.world.centerX - 95, 100, 'button', actionOnClick, this, 2, 1, 0);
+           
+            player = game.add.sprite(32, 32, 'dude');
+            game.physics.enable(player, Phaser.Physics.ARCADE);
+
+            player.body.bounce.y = 0.2;
+            player.body.collideWorldBounds = true;
+            // player.body.setSize(20, 32, 5, 16);
+
+            /////////////// turn on the surface /////////////////////// 
+
+            player.animations.add('left', [0, 1, 2, 3], 10, true);
+            player.animations.add('turn', true);
+            player.animations.add('right', [5, 6, 7, 8], 10, true);
+
+            cursors = game.input.keyboard.createCursorKeys();
+            jumpButton = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
+
+            //////////// star collect ///////////////////
+            stars = game.add.group();
+            stars.enableBody = true;
+
+            text = game.add.text(100, 100, "Score : ", {
+                font: "30px Arial",
+                fill: "#ff0044",
+                align: "top-center"
+            });
+
+            cnt = game.add.text(game.world.centerX, game.world.centerY, 'Counter: 0', { font: "64px Arial", fill: "#ffffff", align: "center" });
+
+            text.anchor.setTo(0.5, 0.5);
+            game.state.stop(); 
+            //  Here we'll create 12 of them evenly spaced apart
+            for (var i = 0; i < 12; i++) {
+                //  Create a star inside of the 'stars' group
+                var star = stars.create(i * 70, 1, 'star');
+
+                //  Let gravity do its thing
+                star.body.gravity.y = 6;
+                star.body.collideWorldBounds = true;
+
+                //  This just gives each star a slightly random bounce value
+                star.body.bounce.y = 0.7 + Math.random() * 0.2;
+            }
+
+            game.time.events.loop(Phaser.Timer.SECOND, updateCounter, this);
+              
+
+        }
+
+        function updateCounter() {
+
+            counter++;
+            if(cnt == 4)
+            {
+                alert("hjghjgh")
+               // game.state.start("game", true, false); 
+            }  
+            // else{
+            //     game.state.start("game", false, false); 
+            // }     
+            cnt.setText('Counter: ' + counter);
+
+        }
+
+        function actionOnClick() {
+
+            background.visible = !background.visible;
+
+        }
+
+        function update() {
+
+            player.body.velocity.x = 0;
+
+            if (cursors.left.isDown) {
+                player.body.velocity.x = -150;
+                player.animations.play('left'); //////////// along with path change face direction      
+                game.physics.arcade.overlap(player, stars, collectStar, null, this);
+            }
+            else if (cursors.right.isDown) {
+                player.body.velocity.x = 150;
+                player.animations.play('right');
+                game.physics.arcade.overlap(player, stars, collectStar, null, this);
+            }
+            else {
+                player.body.velocity.x = 0;
+                player.animations.stop();
+            }
+            
+              
+
+            if (jumpButton.isDown && player.body.onFloor() && game.time.now > jumpTimer) {
+                player.body.velocity.y = -250;
+                jumpTimer = game.time.now + 750;
+            }
+
+
+        }
+
+        function stopAnimation() {
+
+            //  This will just top the animation from running, freezing it at its current frame
+            // greenJellyfish.animations.stop();
+
+            //  This method will reset the frame to frame 1 after stopping
+            greenJellyfish.animations.stop(null, true);
+
+        }
+
+        function collectStar(player, star) {
+            star.kill();
+            score += 10;
+            // var text = game.add.text(32, 32, 'Score: ' + score);
+            // text.inputEnabled = true;
+            // text.input.enableDrag();
+            text.setText("Score : " + score);
+
+        }
+    </script>
+
+</body>
+
+</html>
